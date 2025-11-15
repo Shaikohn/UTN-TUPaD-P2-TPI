@@ -16,6 +16,6 @@ import entities.DomicilioFiscal;
  * Por ahora, solo usa las operaciones CRUD genéricas.
  */
 public interface DomicilioFiscalService extends GenericService<DomicilioFiscal> {
-    // Podrías agregar métodos específicos si hiciera falta.
+    // Podemos agregar métodos específicos si hace falta (Creo que no)
 }
 

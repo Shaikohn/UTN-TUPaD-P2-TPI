@@ -17,7 +17,7 @@ import java.sql.SQLException;
 /**
  * Clase de utilidad para obtener conexiones JDBC a MySQL.
  *
- * Lee primero propiedades del sistema:
+ * Lee primero las propiedades del sistema:
  *   -Ddb.url
  *   -Ddb.user
  *   -Ddb.password
@@ -36,7 +36,7 @@ public final class DatabaseConnection {
     static {
         try {
             // Driver moderno de MySQL
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");  //Revisar que esté en la librería
         } catch (ClassNotFoundException e) {
             System.err.println("No se pudo cargar el driver de MySQL: " + e.getMessage());
         }

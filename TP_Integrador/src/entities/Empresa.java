@@ -13,7 +13,7 @@ package entities;
 /**
  * Entidad A: Empresa
  *
- * Tabla sugerida en BD: Empresas
+ * Tabla en BD: Empresas
  * Campos:
  *   - id (PK, BIGINT, AUTO_INCREMENT)
  *   - eliminado (BOOLEAN)
