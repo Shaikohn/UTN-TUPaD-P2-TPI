@@ -448,5 +448,5 @@ Este proyecto representa la integración de todos los conceptos vistos durante e
 
 ---
 **Proyecto Educativo** - Trabajo Práctico Integrador de Programación 2
-**Alumnos**: Campana, Mario, Chiavón, Cristian - Chiavón, Facundo - Cokohn, Shai.
+**Alumnos**: Campana, Mario, Chiavón, Cristian - Chiavón, Facundo - Kohn, Shai.
 ````
