@@ -65,7 +65,7 @@ El sistema permite gestionar dos entidades principales con las siguientes operac
 
 - **Gestión de empresas**: Crear, listar, actualizar y eliminar empresas con validación de cuit único
 - **Gestión de Domicilios Fiscales**: Administrar domicilios fiscales de forma independiente o asociados a empresas
-- **Búsqueda Inteligente**: Filtrar empresas por cuit o razón social con coincidencias parciales
+- **Búsqueda Inteligente**: Filtrar empresas por cuit.
 - **Soft Delete**: Eliminación lógica que preserva la integridad de datos
 - **Seguridad**: Protección contra SQL injection mediante PreparedStatements
 - **Validación Multi-capa**: Validaciones en capa de servicio y base de datos
@@ -86,7 +86,7 @@ El sistema permite gestionar dos entidades principales con las siguientes operac
 
 Ejecutar el siguiente script SQL en MySQL:
 
-`````sql
+````sql
 CREATE DATABASE IF NOT EXISTS tpip2;
 USE tpip2;
 
@@ -114,19 +114,8 @@ CREATE TABLE Domicilios (
  );
  ```
 
-### 2. Compilar el Proyecto
 
--- TO-DO Crear compilacion
-
--- ```bash
--- # Linux/macOS
--- ./gradlew clean build
-
--- # Windows
--- gradlew.bat clean build
--- ````
-
-### 3. Configurar Conexión (Opcional)
+### 2. Configurar Conexión (Opcional)
 
 Por defecto conecta a:
 
@@ -135,79 +124,36 @@ Por defecto conecta a:
 - **Usuario**: root
 - **Contraseña**: (vacía)
 
-Para cambiar la configuración, usar propiedades del sistema:
-
-```bash
-java -Ddb.url=jdbc:mysql://localhost:3306/dbtpip2 \
-     -Ddb.user=usuario \
-     -Ddb.password=clave \
-     -cp ...
-```
 
 ## Ejecución
 
-### Opción 1: Desde IDE
+### Ejecutar desde IDE
 
--- TO-DO Verificar esto
 
--- 1. Abrir proyecto en IntelliJ IDEA o Eclipse
--- 2. Ejecutar clase `Main.Main`
+-- 1. Abrir proyecto en Apache Netbeans
 
--- ### Opción 2: Línea de comandos
+-- 2. Localizar JAR de MySQL dentro del proyecto y configurar la dirección
+-- ..\UTN-TUPaD-P2-TPI\mysql-connector-j-9.5.0\mysql-connector-j-9.5.0.jar
 
--- **Windows:**
+-- 3. Ejecutar clase `Main.Main`
 
--- ```bash
--- # Localizar JAR de MySQL
--- dir /s /b %USERPROFILE%\.gradle\caches\*mysql-connector-j-8.4.0.jar
-
--- # Ejecutar (reemplazar <ruta-mysql-jar>)
--- java -cp "build\classes\java\main;<ruta-mysql-jar>" Main.Main
--- ```
-
--- **Linux/macOS:**
-
--- ```bash
--- # Localizar JAR de MySQL
--- find ~/.gradle/caches -name "mysql-connector-j-8.4.0.jar"
-
--- # Ejecutar (reemplazar <ruta-mysql-jar>)
--- java -cp "build/classes/java/main:<ruta-mysql-jar>" Main.Main
--- ```
-
--- ### Verificar Conexión
-
--- ```bash
--- # Usar TestConexion para verificar conexión a BD
--- java -cp "build/classes/java/main:<ruta-mysql-jar>" Main.TestConexion
--- ```
-
--- Salida esperada:
-
--- ```
--- Conexion exitosa a la base de datos
--- Usuario conectado: root@localhost
--- Base de datos: dbtpip2
--- URL: jdbc:mysql://localhost:3306/dbtpip2
--- Driver: MySQL Connector/J v8.4.0
--- ```
 
 ## Uso del Sistema
 
 ### Menú Principal
 
 ```
-========= MENU =========
-1. Crear empresa
+========= MENU EMPRESAS =========
+1. Crear empresa (con o sin domicilio)
 2. Listar empresas
-3. Actualizar empresa
-4. Eliminar empresa
-5. Crear domicilio fiscal
-6. Listar domicilios fiscales
-7. Actualizar domicilio fiscal por ID
-8. Eliminar domicilio fiscal por ID
-9. Actualizar domicilio fiscal por ID de empresa
-10. Eliminar domicilio fiscal por ID de empresa
+3. Buscar empresa por CUIT
+4. Actualizar empresa
+5. Eliminar empresa
+========= MENU DOMICILIOS =========
+6. Crear domicilio fiscal
+7. Listar domicilios fiscales
+8. Actualizar domicilio fiscal
+9. Eliminar domicilio fiscal
 0. Salir
 ```
 
@@ -233,45 +179,48 @@ Numero: 123
 
 #### 2. Listar Empresas
 
-Dos opciones:
-
-- **(1) Listar todos**: Muestra todas las empresas activas
-- **(2) Buscar**: Filtra por razón social o cuit
-
-**Ejemplo de búsqueda:**
-
-```
-Ingrese texto a buscar: Vaca Loca
+- Muestra un listado de las empresas existentes con sus correspondientes datos.
 ```
 
 **Resultado:**
 
 ```
-ID: 1, Razón Social: Vaca Loca, Actividad principal: Carniceria, Cuit: 2038900981, Email:vacaloca@gmail.com
-   Domicilio fiscal: Savio 123
+== Listado de empresas ==
+Empresa{id=1, eliminado=false, razonSocial='Vaca Loca', cuit='2038900981', actividadPrincipal='Carniceria', email='vacaloca@gmail.com', domicilioFiscal=DomicilioFiscal{id=1, eliminado=false, calle='Savio', numero=123}}
 ```
 
 #### 3. Actualizar Empresa
 
 - Permite modificar Razón social, Actividad principal, Cuit, Email
-- Permite actualizar o agregar domicilio fiscal
+- Permite mantener o quitar el domicilio fiscal
 - Presionar Enter sin escribir mantiene el valor actual
+- Requiere ID
 
 **Ejemplo:**
 
 ```
-Cuit de la empresa a actualizar: 2038900981
-Nueva razón social (actual: Vaca Loca, Enter para mantener):
-Nueva actividad principal (actual: Carniceria, Enter para mantener): Fregorifico
-Nuevo Cuit (actual: 2038900981, Enter para mantener):
-Nuevo Email (actual: vacaloca@gmail.com, Enter para mantener):
-¿Desea actualizar el domicilio? (s/n): n
+Empresa actual:
+Empresa{id=1, eliminado=false, razonSocial='Vaca Loca', cuit='2038900981', actividadPrincipal='Carniceria', email='vacaloca@gmail.com', domicilioFiscal=DomicilioFiscal{id=1, eliminado=false, calle='Savio', numero=123}}
+Deje vacío el campo para mantener el valor actual.
+Nueva raz�n social (Vaca Loca):
+Nuevo CUIT (2038900981):
+Nueva actividad (Carniceria): Frigorífico
+Nuevo email (vacaloca@gmail.com):
+Domicilio actual: domicilioFiscal=DomicilioFiscal{id=1, eliminado=false, calle='Savio', numero=123}
+Opciones de domicilio:
+1. Mantener como está
+2. Quitar domicilio (dejar empresa sin domicilio) / 2. Asignar domicilio
+Seleccione opci�n (1-2, Enter para 1):
+Empresa actualizada correctamente:
+Empresa{id=1, eliminado=false, razonSocial='Vaca Loca', cuit='2038900981', actividadPrincipal='Frigorífico', email='vacaloca@gmail.com', domicilioFiscal=DomicilioFiscal{id=1, eliminado=false, calle='Savio', numero=123}}
+
+
 ```
 
 #### 4. Eliminar Empresa
 
 - Eliminación lógica (marca como eliminada, no borra físicamente)
-- Requiere Cuit de la empresa
+- Requiere ID de la empresa
 
 #### 5. Crear Domicilio fiscal
 
@@ -289,19 +238,9 @@ Nuevo Email (actual: vacaloca@gmail.com, Enter para mantener):
 
 #### 8. Eliminar Domicilio fiscal por ID
 
-- ⚠️ **ADVERTENCIA**: Puede dejar referencias huérfanas si está asociado a empresa
-- Usar opción 10 como alternativa segura
-
-#### 9. Actualizar Domicilio por Empresa
-
-- Actualiza el domicilio asociado a una empresa específica
-- Requiere Cuit de la empresa
-
-#### 10. Eliminar Domicilio por Empresa (RECOMENDADO)
-
 - ✅ **Eliminación segura**: Primero actualiza la referencia en empresa, luego elimina
 - Previene referencias huérfanas
-- Requiere Ciut de la empresa
+
 
 ## Arquitectura
 
@@ -311,7 +250,7 @@ Nuevo Email (actual: vacaloca@gmail.com, Enter para mantener):
 ┌─────────────────────────────────────┐
 │     Main / UI Layer                 │
 │  (Interacción con usuario)          │
-│  AppMenu, MenuHandler, MenuDisplay  │
+│  AppMenu, Main                      │
 └───────────┬─────────────────────────┘
             │
 ┌───────────▼─────────────────────────┐
@@ -319,52 +258,52 @@ Nuevo Email (actual: vacaloca@gmail.com, Enter para mantener):
 │  (Lógica de negocio y validación)   │
 │  EmpresaServiceImpl                 │
 │  DomicilioServiceImpl               │
+│  GenericService                     │
 └───────────┬─────────────────────────┘
             │
 ┌───────────▼─────────────────────────┐
 │     DAO Layer                       │
 │  (Acceso a datos)                   │
-│  EmpresaDAO, DomicilioDAO           │
+│  EmpresaDAO, DomicilioFiscalDAO,    │
+│  GenericDAO                         │
 └───────────┬─────────────────────────┘
             │
 ┌───────────▼─────────────────────────┐
 │     Models Layer                    │
 │  (Entidades de dominio)             │
-│  Empresa, Domicilio, Base           │
+│  Empresa, DomicilioFiscal, Base     │
 └─────────────────────────────────────┘
 ```
 
 ### Componentes Principales
 
-**Config/**
+**Config**
 
 - `DatabaseConnection.java`: Gestión de conexiones JDBC con validación en inicialización estática
 - `TransactionManager.java`: Manejo de transacciones con AutoCloseable
 
-**Models/**
+**Models**
 
 - `Base.java`: Clase abstracta con campos id y eliminado
 - `Empresa.java`: Entidad Empresa (nombre, apellido, dni, domicilio)
 - `Domicilio.java`: Entidad Domicilio (calle, numero)
 
-**Dao/**
+**Dao**
 
 - `GenericDAO<T>`: Interface genérica con operaciones CRUD
 - `EmpresaDAO`: Implementación con queries LEFT JOIN para incluir domicilio
 - `DomicilioDAO`: Implementación para domicilios
 
-**Service/**
+**Service**
 
 - `GenericService<T>`: Interface genérica para servicios
 - `EmpresaServiceImpl`: Validaciones de empresa y coordinación con domicilios
 - `DomicilioServiceImpl`: Validaciones de domicilio
 
-**Main/**
+**Main**
 
 - `Main.java`: Punto de entrada
-- `AppMenu.java`: Orquestador del ciclo de menú
-- `MenuHandler.java`: Implementación de operaciones CRUD con captura de entrada
-- `MenuDisplay.java`: Lógica de visualización de menús
+- `AppMenu.java`: Implementación de operaciones CRUD con captura de entrada
 - `TestConexion.java`: Utilidad para verificar conexión a BD
 
 ## Modelo de Datos
@@ -424,10 +363,9 @@ Nuevo Email (actual: vacaloca@gmail.com, Enter para mantener):
 1. **Cuit único**: No se permiten empresas con Cuit duplicado
 2. **Campos obligatorios**: razon_social y Cuit son requeridos para empresa
 3. **Validación antes de persistir**: Service layer valida antes de llamar a DAO
-4. **Eliminación segura de domicilio**: Usar opción 10 (por empresa) en lugar de opción 8 (por ID)
-5. **Preservación de valores**: En actualización, campos vacíos mantienen valor original
-6. **Búsqueda flexible**: LIKE con % permite coincidencias parciales
-7. **Transacciones**: Operaciones complejas soportan rollback
+4. **Preservación de valores**: En actualización, campos vacíos mantienen valor original
+5. **Búsqueda flexible**: LIKE con % permite coincidencias parciales
+6. **Transacciones**: Operaciones complejas soportan rollback
 
 ## Solución de Problemas
 
@@ -440,18 +378,6 @@ Nuevo Email (actual: vacaloca@gmail.com, Enter para mantener):
 ### Error: "Communications link failure"
 
 **Causa**: MySQL no está ejecutándose
-
-**Solución**:
-
-```bash
-# Linux/macOS
-sudo systemctl start mysql
-# O
-brew services start mysql
-
-# Windows
-net start MySQL80
-```
 
 ### Error: "Access denied for user 'root'@'localhost'"
 
@@ -471,26 +397,8 @@ net start MySQL80
 
 **Solución**: Ejecutar script de creación de tablas (ver sección Instalación)
 
-## Limitaciones Conocidas
-
-1. **No hay tarea gradle run**: Debe ejecutarse con java -cp manualmente o desde IDE
-2. **Interfaz solo consola**: No hay GUI gráfica
-3. **Un domicilio por empresa**: No soporta múltiples domicilios
-4. **Sin paginación**: Listar todos puede ser lento con muchos registros
-5. **Opción 8 peligrosa**: Eliminar domicilio por ID puede dejar referencias huérfanas (usar opción 10)
-6. **Sin pool de conexiones**: Nueva conexión por operación (aceptable para app de consola)
-7. **Sin transacciones en MenuHandler**: Actualizar empresa + domicilio puede fallar parcialmente
 
 ## Documentación Adicional
-
--- TO-DO VERIFICAR ESTO
--- - **CLAUDE.md**: Documentación técnica detallada para desarrollo
-
---   - Comandos de build y ejecución
---   - Arquitectura profunda
---   - Patrones de código críticos
---   - Troubleshooting avanzado
---   - Verificación de calidad (score 9.7/10)
 
 - **HISTORIAS_DE_USUARIO.md**: Especificaciones funcionales completas
   - Historias de usuario detalladas
@@ -500,137 +408,29 @@ net start MySQL80
 
 ## Tecnologías Utilizadas
 
-- **Lenguaje**: Java 17
-- **Build Tool**: Gradle 8.12
-- **Base de Datos**: MySQL 8.x
-- **JDBC Driver**: mysql-connector-j 8.4.0
-- **Testing**: JUnit 5 (configurado, sin tests implementados)
+- **Lenguaje**: Java 24.0.2
+- **Base de Datos**: MySQL 10.x
+- **JDBC Driver**: mysql-connector-j 9.5.0
+
 
 ## Estructura de Directorios
 
 ```
-TPI-Prog2-fusion-final/
-├── src/main/java/
-│   ├── Config/          # Configuración de BD y transacciones
-│   ├── Dao/             # Capa de acceso a datos
-│   ├── Main/            # UI y punto de entrada
-│   ├── Models/          # Entidades de dominio
+UTN-TUPaD-P2-TPI/
+├── src/
+│   ├── config/          # Configuración de BD y transacciones
+│   ├── dao/             # Capa de acceso a datos
+│   ├── entities/        # Entidades de dominio
+│   ├── main/            # UI y punto de entrada
 │   └── Service/         # Lógica de negocio
-├── build.gradle         # Configuración de Gradle
-├── gradlew              # Gradle wrapper (Unix)
-├── gradlew.bat          # Gradle wrapper (Windows)
 ├── README.md            # Este archivo
-├── CLAUDE.md            # Documentación técnica
 └── HISTORIAS_DE_USUARIO.md  # Especificaciones funcionales
+└── UML.png              # Diagrama UML del proyecto
+└── Informe.pdf          # Informe del proyecto
+
+
 ```
-
-## Convenciones de Código
-
-- **Idioma**: Español (nombres de clases, métodos, variables)
-- **Nomenclatura**:
-  - Clases: PascalCase (Ej: `EmpresaServiceImpl`)
-  - Métodos: camelCase (Ej: `buscarPorCuit`)
-  - Constantes SQL: UPPER_SNAKE_CASE (Ej: `SELECT_BY_ID_SQL`)
-- **Indentación**: 4 espacios
-- **Recursos**: Siempre usar try-with-resources
-- **SQL**: Constantes privadas static final
-- **Excepciones**: Capturar y manejar con mensajes al usuario
-
-## Evaluación y Criterios de Calidad
-
-### Aspectos Evaluados en el TPI
-
-Este proyecto demuestra competencia en los siguientes criterios académicos:
-
-**✅ Arquitectura y Diseño (30%)**
-
-- Correcta separación en capas con responsabilidades bien definidas
-- Aplicación de patrones de diseño apropiados (DAO, Service Layer, Factory)
-- Uso de interfaces para abstracción y polimorfismo
-- Implementación de herencia con clase abstracta Base
-
-**✅ Persistencia de Datos (25%)**
-
-- Correcta implementación de operaciones CRUD con JDBC
-- Uso apropiado de PreparedStatements (100% de las consultas)
-- Gestión de transacciones con commit/rollback
-- Manejo de relaciones entre entidades (Foreign Keys, LEFT JOIN)
-- Soft delete implementado correctamente
-
-**✅ Manejo de Recursos y Excepciones (20%)**
-
-- Try-with-resources en todas las operaciones JDBC
-- Cierre apropiado de conexiones, statements y resultsets
-- Manejo de excepciones con mensajes informativos al usuario
-- Prevención de resource leaks
-
-**✅ Validaciones e Integridad (15%)**
-
-- Validación de campos obligatorios en múltiples niveles
-- Validación de unicidad de Cuit (base de datos + aplicación)
-- Verificación de integridad referencial
-- Prevención de referencias huérfanas mediante eliminación segura
-
-**✅ Calidad de Código (10%)**
-
-- Código documentado con Javadoc completo (13 archivos)
-- Convenciones de nomenclatura consistentes
-- Código legible y mantenible
-- Ausencia de code smells o antipatrones críticos
-
-**✅ Funcionalidad Completa (10%)**
-
-- Todas las operaciones CRUD funcionan correctamente
-- Búsquedas y filtros implementados
-- Interfaz de usuario clara y funcional
-- Manejo robusto de errores
-
-### Puntos Destacables del Proyecto
-
-1. **Score de Calidad Verificado**: 9.7/10 mediante análisis exhaustivo de:
-
-   - Arquitectura y flujo de datos
-   - Manejo de excepciones
-   - Integridad referencial
-   - Validaciones multi-nivel
-   - Gestión de recursos
-   - Consistencia de queries SQL
-
-2. **Documentación Profesional**:
-
-   - README completo con ejemplos y troubleshooting
-   - CLAUDE.md con arquitectura técnica detallada
-   - HISTORIAS_DE_USUARIO.md con 11 historias y 51 reglas de negocio
-   - Javadoc completo en todos los archivos fuente
-
-3. **Implementaciones Avanzadas**:
-
-   - Eliminación segura de domicilios (previene FKs huérfanas)
-   - Validación de Cuit único en dos niveles (DB + aplicación)
-   - Coordinación transaccional entre servicios
-   - Búsqueda flexible con LIKE pattern matching
-
-4. **Buenas Prácticas Aplicadas**:
-   - Dependency Injection manual
-   - Separación de concerns (AppMenu, MenuHandler, MenuDisplay)
-   - Factory pattern para conexiones
-   - Input sanitization con trim() consistente
-   - Fail-fast validation
-
-### Conceptos de Programación 2 Demostrados
-
-| Concepto                 | Implementación en el Proyecto                                              |
-| ------------------------ | -------------------------------------------------------------------------- |
-| **Herencia**             | Clase abstracta `Base` heredada por `Empresa` y `Domicilio`                |
-| **Polimorfismo**         | Interfaces `GenericDAO<T>` y `GenericService<T>`                           |
-| **Encapsulamiento**      | Atributos privados con getters/setters en todas las entidades              |
-| **Abstracción**          | Interfaces que definen contratos sin implementación                        |
-| **JDBC**                 | Conexión, PreparedStatements, ResultSets, transacciones                    |
-| **DAO Pattern**          | `EmpresaDAO`, `DomicilioDAO` abstraen el acceso a datos                    |
-| **Service Layer**        | Lógica de negocio separada en `EmpresaServiceImpl`, `DomicilioServiceImpl` |
-| **Exception Handling**   | Try-catch en todas las capas, propagación controlada                       |
-| **Resource Management**  | Try-with-resources para AutoCloseable (Connection, Statement, ResultSet)   |
-| **Dependency Injection** | Construcción manual de dependencias en `AppMenu.createEmpresaService()`    |
+ |
 
 ## Contexto Académico
 
@@ -649,10 +449,6 @@ Este proyecto representa la integración de todos los conceptos vistos durante e
 - Documentar código de forma profesional
 
 ---
-
-**Versión**: 1.0
-**Java**: 17+
-**MySQL**: 8.x
-**Gradle**: 8.12
 **Proyecto Educativo** - Trabajo Práctico Integrador de Programación 2
-`````
+** Alumnos: Campana, Mario, Chiavón, Cristian - Chiavón, Facundo - Cokohn, Shai.
+````

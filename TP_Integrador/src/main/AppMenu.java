@@ -8,8 +8,6 @@ package main;
  *
  * @author Mario Campana
  */
-
-
 import entities.DomicilioFiscal;
 import entities.Empresa;
 import service.DomicilioFiscalService;
@@ -22,8 +20,8 @@ import java.util.Optional;
 import java.util.Scanner;
 
 /**
- * Menú principal por consola.
- * Conecta la capa de presentación con los servicios.
+ * Menú principal por consola. Conecta la capa de presentación con los
+ * servicios.
  */
 public class AppMenu {
 
@@ -81,7 +79,6 @@ public class AppMenu {
     }
 
     // ================= MENÚ =================
-
     private void mostrarMenu() {
         System.out.println("========= MENU EMPRESAS =========");
         System.out.println("1. Crear empresa (con o sin domicilio)");
@@ -89,7 +86,7 @@ public class AppMenu {
         System.out.println("3. Buscar empresa por CUIT");
         System.out.println("4. Actualizar empresa");
         System.out.println("5. Eliminar empresa (baja lógica)");
-        System.out.println("------------ DOMICILIOS ----------");
+        System.out.println("========= MENU DOMICILIOS =========");
         System.out.println("6. Crear domicilio fiscal");
         System.out.println("7. Listar domicilios fiscales");
         System.out.println("8. Actualizar domicilio fiscal");
@@ -99,7 +96,6 @@ public class AppMenu {
     }
 
     // ================= OPCIONES EMPRESA =================
-
     private void crearEmpresa() {
         System.out.println("== Crear nueva empresa ==");
 
@@ -205,24 +201,53 @@ public class AppMenu {
         }
 
         // Domicilio
-        System.out.println("Domicilio actual: " +
-                (empresa.getDomicilioFiscal() != null ? empresa.getDomicilioFiscal() : "SIN DOMICILIO"));
+        System.out.println("Domicilio actual: "
+                + (empresa.getDomicilioFiscal() != null ? empresa.getDomicilioFiscal() : "SIN DOMICILIO"));
         System.out.println("Opciones de domicilio:");
         System.out.println("1. Mantener como está");
-        System.out.println("2. Quitar domicilio (dejar empresa sin domicilio)");
+        if (empresa.getDomicilioFiscal() == null) {
+            System.out.println("2. Asignar domicilio");
+        } else {
+            System.out.println("2. Quitar domicilio (dejar empresa sin domicilio)");
+        }
         System.out.print("Seleccione opción (1-2, Enter para 1): ");
         String linea = scanner.nextLine().trim();
 
         if (!linea.isEmpty()) {
             int opDom = Integer.parseInt(linea);
             if (opDom == 2) {
-                empresa.setDomicilioFiscal(null);
+                if (empresa.getDomicilioFiscal() == null) {
+                    long idDomFisc = leerLong("Ingrese el ID del Domicilio Fiscal a asignar: ");
+                    actualizarDomicilio(id, idDomFisc);
+                } else {
+                    empresa.setDomicilioFiscal(null);
+                    Empresa actualizada = empresaService.actualizar(empresa);
+                    System.out.println("Empresa actualizada correctamente:");
+                    System.out.println(actualizada);
+                }
             }
+
         }
 
-        Empresa actualizada = empresaService.actualizar(empresa);
-        System.out.println("Empresa actualizada correctamente:");
-        System.out.println(actualizada);
+        if (linea.isEmpty()) {
+            Empresa actualizada = empresaService.actualizar(empresa);
+            System.out.println("Empresa actualizada correctamente:");
+            System.out.println(actualizada);
+        }
+
+    }
+
+    public void actualizarDomicilio(long idEmp, long idDomFisc) {
+        Optional<DomicilioFiscal> optDom = domicilioService.getById(idDomFisc);
+        DomicilioFiscal dom = optDom.get(); 
+            Optional<Empresa> opt = empresaService.getById(idEmp);
+            Empresa empresa = opt.get();
+            if (empresa.getDomicilioFiscal() == null) {
+                empresa.setDomicilioFiscal(dom);
+                Empresa actualizada = empresaService.actualizar(empresa);
+                System.out.println("Empresa actualizada correctamente:");
+                System.out.println(actualizada);
+        }
     }
 
     private void eliminarEmpresa() {
@@ -235,7 +260,6 @@ public class AppMenu {
     }
 
     // ================= OPCIONES DOMICILIO =================
-
     private void crearDomicilio() {
         System.out.println("== Crear domicilio fiscal ==");
 
@@ -308,7 +332,6 @@ public class AppMenu {
     }
 
     // ================= HELPERS DE ENTRADA =================
-
     private int leerEntero(String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -380,4 +403,3 @@ public class AppMenu {
         }
     }
 }
-

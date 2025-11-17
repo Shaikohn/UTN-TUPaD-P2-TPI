@@ -11,7 +11,7 @@ Las relaciones se dividen en dos grupos principales: las que definen el **Modelo
 Estas relaciones definen la estructura de las clases de dominio.
 
 | Relación | Clases Involucradas | Tipo UML | Descripción |
-| :--- | :--- | :--- | :--- |
+| :------- | :------------------ | :------- | :---------- |
 | **Herencia (Generalización)** | `Empresa`, `DomicilioFiscal` ← `Base` | Triángulo hueco (Herencia) | Ambas entidades (Empresa y DomicilioFiscal) heredan de la clase abstracta `Base`, obteniendo atributos comunes como `id` y `eliminado`. |
 | **Asociación (1:1)** | `Empresa` → `DomicilioFiscal` | Flecha simple | Una `Empresa` está asociada a un **máximo de un** `DomicilioFiscal` (`0..1` en el lado del domicilio). Es una relación **unidireccional** (la Empresa conoce al Domicilio, pero el Domicilio no conoce a la Empresa) y está implementada en la base de datos con una clave foránea `UNIQUE` (`domicilioFiscal_id`). |
 

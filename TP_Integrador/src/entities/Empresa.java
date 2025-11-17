@@ -88,7 +88,7 @@ public class Empresa extends Base {
     }
 
     public DomicilioFiscal getDomicilioFiscal() {
-        return domicilioFiscal;
+        return this.domicilioFiscal;
     }
 
     public void setDomicilioFiscal(DomicilioFiscal domicilioFiscal) {
