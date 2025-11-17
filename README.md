@@ -427,10 +427,7 @@ UTN-TUPaD-P2-TPI/
 └── HISTORIAS_DE_USUARIO.md  # Especificaciones funcionales
 └── UML.png              # Diagrama UML del proyecto
 └── Informe.pdf          # Informe del proyecto
-
-
 ```
- |
 
 ## Contexto Académico
 
@@ -450,5 +447,5 @@ Este proyecto representa la integración de todos los conceptos vistos durante e
 
 ---
 **Proyecto Educativo** - Trabajo Práctico Integrador de Programación 2
-** Alumnos: Campana, Mario, Chiavón, Cristian - Chiavón, Facundo - Cokohn, Shai.
+**Alumnos**: Campana, Mario, Chiavón, Cristian - Chiavón, Facundo - Cokohn, Shai.
 ````
